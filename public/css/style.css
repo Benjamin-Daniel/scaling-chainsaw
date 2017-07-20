@@ -47,3 +47,15 @@ footer {
     background: #222;
     text-align: center;
 }
+a {
+    text-decoration: none;
+}
+ul.nav.navbar-nav {
+    display: -webkit-flex;
+    -webkit-flex-direction: row;
+    -webkit-justify-content: space-between;
+}
+
+#child {
+    margin-left: auto;
+}
