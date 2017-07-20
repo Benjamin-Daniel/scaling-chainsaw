@@ -1,0 +1,36 @@
+{
+  "name": "scaling-chainsaw",
+  "version": "1.0.0",
+  "description": "PostIt Introduction PostIt is a simple application that allows friends and colleagues create groups for notifications. This way one person can post notifications to everyone by sending a message once. The application allows people create accounts, create groups and add registered users to the groups, and then send messages out to these groups whenever they want.",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Benjamin Daniel",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "body-parser": "~1.17.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "dotenv": "^4.0.0",
+    "ejs": "^2.5.6",
+    "express": "~4.15.2",
+    "express-ejs-layouts": "^2.3.0",
+    "express-session": "^1.15.3",
+    "jade": "~1.11.0",
+    "mongoose": "^4.10.8",
+    "morgan": "~1.8.1",
+    "nodemon": "^1.11.0",
+    "serve-favicon": "~2.4.2"
+  },
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Benjamin-Daniel/scaling-chainsaw.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Benjamin-Daniel/scaling-chainsaw/issues"
+  },
+  "homepage": "https://github.com/Benjamin-Daniel/scaling-chainsaw#readme"
+}

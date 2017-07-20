@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>PostIt</title>
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-inverse">
+
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <%- defineContent('links')%>
+                </ul> 
+            </nav>
+        </header>
+        <%- defineContent('hero') %>
+
+        <main>
+            <div class="container">
+                <%- body %>
+            </div>
+        </main>
+    </body>
+</html>
