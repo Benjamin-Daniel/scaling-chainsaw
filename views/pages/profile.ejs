@@ -1,4 +1,29 @@
+<h2 class="right"><%= user.username.toUpperCase() %></h2>
+<a href="/group">Create Group</a>
+
+<% for (var i = 0; i<user.groups.length; i++) { %>
+        <div class="groups">
+				<h3><a href="/group/<%= user.groups[i].groupId%>/user"><%= user.groups[i].name %></a></h3>
+				<!-- Trigger/Open The Modal -->
+				<button id="myBtn">Open Modal</button>
+
+				<!-- The Modal -->
+				<div id="myModal" class="modal">
+
+				<!-- Modal content -->
+				<div class="modal-content">
+					<span class="close">×</span>
+					<p><%= user.groups[i].name %></p>
+				</div>
+
+			</div>
+		</div>
+
+
+<% } %>
+
 
         
 <%- contentFor('links') %>
+        <li><a href="/profile">Profile</a></li>
         <li id="child"><a href="/logout">Logout</a></li>

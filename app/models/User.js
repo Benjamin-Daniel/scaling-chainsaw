@@ -7,7 +7,10 @@ var userSchema = new mongoose.Schema({
     username: {type: String, unique: true},
     password: {type: String},
     email: String,
-    groups: Array
+    groups: [{
+        name: String,
+        groupId: String
+    }]
 });
 
 userSchema.pre('save', function(next) {
