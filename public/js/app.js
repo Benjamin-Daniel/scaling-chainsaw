@@ -1,26 +1,51 @@
-
+/*
 // Get the modal
-var modal = document.getElementById('myModal');
+var container = document.querySelector(".container");
 
 // Get the button that opens the modal
 var btn = document.getElementsByClassName("myBtn");
 
 // Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+var span = document.getElementsByClassName("close");
 
-// When the user clicks the button, open the modal
-btn.onclick = function() {
-    modal.style.display = "block";
-}
+container.addEventListener("click", function(e) {
+    console.log(e)
+})
+*/
+( function() {
+    var main = document.querySelector("#main");
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
+    window.addEventListener("resize", function() {
+        console.log("i have been resized");
+        var height = ( window.innerHeight - 248 );
+        height = height + "px";
+        console.log(height)
+        main.style.height  = height;
+    })
+    
+    var height = ( window.innerHeight - 248 );
+    height = height + "px";
+    console.log(height)
+    
+    var right = document.querySelector(".groups");
+    
+    
+    // width = (0.1*(width)) + "px";
+    
+    
+    main.style.height  = height;
+    // main.style.width  = height;
+    //changeWidth(80, main);
+    
+    function changeWidth(cent, object) {
+        var width = window.innerWidth;
+        width = (((width*(cent)/100)) + "px");
+        console.log(width);
+        object.style.width = width;
     }
-}
+    
+    window.addEventListener("resize " ,function() {
+        console.log("log");
+        //changeWidth(80, main);
+    })
+})();

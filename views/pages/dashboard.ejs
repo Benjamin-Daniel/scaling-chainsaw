@@ -1,0 +1,33 @@
+<div class="groups">
+	<%	user.groups.map(function(group, i) { %>
+		<h3><a href="/group/<%=group.groupId%>"><%= group.name %></a></h3>
+	<% }) %>
+</div>
+
+<% var messages = group.posts %>
+<div>
+    <div class="group-header" id="<%=group.name%>">
+        <%= group.name %>
+    </div>
+    <div class="pull-right" id="main" name="<%=group.name%>">
+        <% group.posts.map(function(message) { %>
+            <div class="messages">
+                <p><%= message.message %></p>
+                <span class="sentby"><%= message.username %></span>
+            </div>
+        <%  })  %>
+    </div>
+    <form action="/group/<%=group._id%>/message" method="post">
+        <div class="form">
+            <input type="message" name="message" placeholder="message">
+            <button type="submit" class="btn btn-lg btn-default">Post it</button>
+        </div>
+    </form>
+</div>
+
+
+
+<%- contentFor('links') %>
+		<li id="child"><a href="/logout">Logout</a></li>
+		<li class="right"><a href="/profile"><%= user.username.toUpperCase() %></a></li>
+

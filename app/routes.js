@@ -3,25 +3,31 @@ const   express = require('express'),
         mongoose = require('mongoose'),
         User = require('./models/User'),
         Group = require('./models/Group'),
-        session = require('express-session');        
+        checkLogErr = require('./controllers/app.controller'),
+        session = require('express-session');
 
 
 
 /* GET home page. */
 router.get('/', function(req, res) {
-    res.status(200).render('pages/index');
+    if(req.session.user) {
+        res.status(200).redirect('/profile');
+    } else {
+        res.status(200).render('pages/index');
+    }
 });
 
 // get the login page 
 router.get('/signin', function(req, res) {
-    res.status(200).render('pages/login')
+    res.status(200).render('pages/signin')
 });
 
 router.post('/signin', function(req, res) {
-    var username = req.body.username;
-    var password = req.body.password;
+    var username = req.body.username,
+        password = req.body.password;
 
     User.findOne({username: username}, function(err, user) {
+
         if(err) {
             console.log(err);
             return res.status(500).send();
@@ -33,9 +39,7 @@ router.post('/signin', function(req, res) {
         user.comparePassword(password, function (err, isMatch) {
             if (isMatch && isMatch == true) {
                 req.session.user = user;
-                return res.status(200).render('pages/profile', {
-                    user: user
-                });
+                return res.status(200).redirect('/profile');
             } else {
                 return res.status(401).send("you ain't a user");
             }
@@ -73,7 +77,7 @@ router.get('/group', function(req, res) {
     if(req.session.user) {
         res.status(200).render('pages/group');
     } else {
-        res.status(401).redirect('signup');
+        res.status(401).redirect('/signup');
     }
 })
 
@@ -111,10 +115,7 @@ router.post('/group', function(req, res) {
                     if(err) {
                         console.log(err);
                     }
-                    res.status(200).redirect('/profile', {
-                        user: user,
-                        savedObject: savedObject
-                    });
+                    res.redirect('/profile')
                 })
             });
         })
@@ -180,7 +181,7 @@ router.post('/group/:groupid/user', function(req, res) {
                             if (err) {
                                 console.log(err);
                             }
-                            console.log(user);
+                            res.status(200).send("the user has been added")
                         });
                     });
                 }
@@ -209,14 +210,14 @@ router.post('/group/:groupid/message', function(req, res) {
             if(!grp) {
                 res.status(404).send("No group with such group id")
             }
-            var users = grp.users;
-            var check = false;
+            var users = grp.users,
+                check = false;
             for (var i = 0; i < users.length; i++) {
                 if (users[i] == username) {
                     check = true;
                 }
             }
-            console.log(check)
+
             if( check == true) {
                 var posts = grp.posts
                 var postdata = {
@@ -231,9 +232,8 @@ router.post('/group/:groupid/message', function(req, res) {
                         console.log(err);
                         return res.status(500).send();
                     }
-                    return res.status(200).send(grp);
-                })
-                console.log(post);
+                    return res.status(200).redirect(`/group/${id}`);
+                });
             } else {
                 res.status(401).send("U ain't a user of this group")
             }
@@ -241,6 +241,52 @@ router.post('/group/:groupid/message', function(req, res) {
         })
     } else {
         res.status(401).send("U are not logged in")
+    }
+});
+
+router.get('/group/:groupid', function(req, res) {
+    if(req.session.user) {
+        var username = req.session.user.username,
+            id  = req.params.groupid;
+
+        User.findOne({username: username}, function(err, user) {
+            if (err) {
+                console.log(err);
+                return res.status(500).send();
+            }
+            if (!user) {
+                res.status(404).send("U ain't a user bro")
+            }
+            var groups = user.groups;
+            console.log(user);
+            Group.findById(id, function (err, grp){
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send();
+                } 
+                if (!grp) {
+                    return res.status(404).send("No Group with such id");
+                }
+
+                var users = grp.users;
+                var check = false;
+                for (var i = 0; i < users.length; i++) {
+                    if (users[i] == username) {
+                        check = true;
+                    }
+                }
+                if (check == true ){
+                    res.status(200).render('pages/dashboard', {
+                        user: user,
+                        presentUser: username,
+                        group: grp});
+                } else {
+                    res.status(404).send("U ain't a user of this grp");
+                }
+            })
+        })
+    } else {
+        res.status(404).redirect('/signin');
     }
 });
 
@@ -258,7 +304,7 @@ router.get('/profile', function(req, res) {
                 groups: groups});
         })
     } else {
-        res.status(401).redirect('/signup');
+        res.status(401).redirect('/signin');
     }
 });
 
