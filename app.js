@@ -40,7 +40,7 @@ app.use(session({ secret: Secret, resave: false, saveUninitialized: true }));
 app.use(router);
 
 
-
+console.log('lol')
 
 // start the server
 app.listen(port, function () {
