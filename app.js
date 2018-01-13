@@ -9,13 +9,14 @@ const express = require('express'),
 	bodyParser = require('body-parser'),
 	session = require('express-session'),
 	mongoose = require('mongoose'),
-	expressLayouts = require('express-ejs-layouts')
+	expressLayouts = require('express-ejs-layouts'),
 	app = express(),
 	router = require('./app/routes'),
+	group = require('./app/group'),
 	Secret = process.env.SECRET;
 
 
-mongoose.connect(process.env.DB_URI, { useMongoClient: true, }, function (err) {
+mongoose.connect(process.env.DB_URI_OFFLINE, { useMongoClient: true, }, function (err) {
 	if (err) {
 		return console.log(err);
 	}
@@ -37,14 +38,22 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({ secret: Secret, resave: false, saveUninitialized: true }));
 //set the routes
-app.use(router);
+app.use('/', router);
+app.use('/group', group);
 
-
-console.log('lol')
+var server = require('http').createServer(app),
+	io = require('socket.io').listen(server);
 
 // start the server
-app.listen(port, function () {
+server.listen(port, function () {
 	console.log(`app listening on http://loalhost:${port}`);
 });
 
-module.exports = app;
+io.sockets.on('connection', function (socket) {
+	console.log('lols')
+	socket.on('send message', function (data) {
+		io.sockets.emit('new message', { msg: data });
+	})
+})
+
+//module.exports = app;

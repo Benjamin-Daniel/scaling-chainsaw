@@ -11,7 +11,7 @@ var span = document.getElementsByClassName("close");
 container.addEventListener("click", function(e) {
     console.log(e)
 })
-*/
+
 ( function() {
     var main = document.querySelector("#main");
 
@@ -49,3 +49,20 @@ container.addEventListener("click", function(e) {
         //changeWidth(80, main);
     })
 })();
+
+*/
+$(function () {
+    var socket = io.connect();
+    $("form.mesForm button").on('click', function (e) {
+        e.preventDefault();
+        var value = $("form.mesForm input[name= \"message\"] ").val();
+        var len = value.length;
+        if (len > 0) {
+            console.log(value)
+            socket.emit('send message', 'lol')
+        }
+    })
+    socket.on('new message', function (data) {
+        console.log(data)
+    })
+})
